@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <import resource="applicationContext-user.xml"/>
+        <import resource="applicationContext-product.xml"/>
+    <!--    <bean id="userDao" class="com.zhang.dao.impl.UserDaoImpl" scope="prototype" init-method="init" destroy-method="destory"></bean>-->
+<!--    <bean id="userDao" class="com.zhang.dao.factory.StaticFactory"  factory-method="getUserDao"></bean>-->
+    <bean id="factory" class="com.zhang.dao.factory.DynamicFactory"></bean>
+<!--    <bean id="userDao" factory-bean="factory" factory-method="getUserDao">-->
+<!--        <property name="userName" value="zhangsan"/>-->
+<!--        <property name="age" value="18"/>-->
+<!--    </bean>-->
+<!--    <bean id="userService" class="com.zhang.dao.service.impl.UserServiceImpl">-->
+<!--        <property name="userDao" ref="userDao"></property>-->
+<!--    </bean>-->
+<!--    <bean id="userService" class="com.zhang.dao.service.impl.UserServiceImpl"  p:userDao-ref="userDao"></bean>-->
+    <bean id="userService" class="com.zhang.dao.service.impl.UserServiceImpl">
+        <constructor-arg name="userDao" ref="userDao"></constructor-arg>
+    </bean>
+
+    <bean id="userDao" factory-bean="factory" factory-method="getUserDao">
+        <property name="list" >
+            <list>
+                <value>111</value>
+                <value>222</value>
+                <value>333</value>
+            </list>
+        </property>
+        <property name="userMap">
+            <map>
+                <entry key="1" value-ref="user">
+                </entry>
+            </map>
+        </property>
+        <property name="properties">
+
+            <props >
+                <prop key="1">1</prop>
+                <prop key="2">2</prop>
+                <prop key="3">3</prop>
+            </props>
+        </property>
+        <property name="age" value="18"/>
+    </bean>
+    <bean id="user" class="com.zhang.dao.domain.User">
+        <property name="name" value="zhangsi"></property>
+        <property name="address" value="西安市雁塔区"></property>
+    </bean>
+
+</beans>
